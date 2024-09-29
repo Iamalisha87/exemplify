@@ -2,24 +2,26 @@ import streamlit as st
 import openai
 
 # Set up OpenAI API key
-openai.api_key = 'api_key'
+openai.api_key = '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'
 
-# Customize page layout
-st.set_page_config(page_title="Exemplify Exam Support Bot", layout="wide", page_icon=":robot_face:")
-
-# Function to get response from OpenAI based on user input
+# Function to get response from OpenAI based on user input (Updated for v1.0.0+ chat completion)
 def get_response(issue):
-    prompt = f"Provide a helpful and reassuring solution to the following exam-related issue: {issue}"
-    response = openai.Completion.create(
-        engine="gpt-3.5-turbo", # GPT-4 if available
-        prompt=prompt,
-        max_tokens=150
+    response = openai.chat.completions.create(
+        model="gpt-4",  # You can use "gpt-3.5-turbo" if preferred
+        messages=[
+            {"role": "system", "content": "You are an AI assistant that helps students resolve issues during online exams."},
+            {"role": "user", "content": issue}
+        ],
+        max_tokens=150,
+        temperature=0.7  # Adjust the creativity of the responses
     )
-    return response.choices[0].text.strip()
+    
+    # Access the content of the message properly
+    return response.choices[0].message.content.strip()
 
 # Sidebar for navigation
 with st.sidebar:
-    st.image("logo.png", width=100)
+    st.image("https://support.examsoft.com/hc/theming_assets/01J0V5JB641M8E45VRAJBN6Z99", width=100)
     st.title("Exemplify Support")
     st.write("Quick solutions for exam issues.")
     issue_type = st.selectbox("Select Issue Type", ["Technical Issues", "Software Issues", "Submission Issues", "Other"])
@@ -66,7 +68,7 @@ if st.button("Get Solution"):
         st.error("Please describe your issue first!")
 
 # Add some GenAI generated image for visual aid (Placeholder)
-st.image("genai_image_placeholder.png", caption="Example of solving technical issue.")
+st.image("https://png.pngtree.com/element_our/20190523/ourmid/pngtree-vector-yellow-looking-information-magnifying-glass-image_1082093.jpg", caption="Example of solving technical issue.")
 
 # Footer
 st.markdown("---")
