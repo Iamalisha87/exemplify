@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Set up OpenAI API key
-openai.api_key = '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'
+openai.api_key = 'api-key'
 
 # Function to get response from OpenAI based on user input (Updated for v1.0.0+ chat completion)
 def get_response(issue):
